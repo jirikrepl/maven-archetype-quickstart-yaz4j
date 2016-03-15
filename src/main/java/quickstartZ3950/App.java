@@ -1,38 +1,35 @@
 package quickstartZ3950;
 
-import org.yaz4j.Connection;
-import org.yaz4j.Record;
-import org.yaz4j.ResultSet;
+import org.yaz4j.*;
 import org.yaz4j.exception.ZoomException;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
 
-        Connection con = new Connection(null, 0);
-        /*
-        con.setSyntax(syntax);
+        Connection con = new Connection("aleph.mzk.cz", 9991);
+        con.setDatabaseName("MZK01");
+
         try {
             con.connect();
-            ResultSet set = con.search(query, Connection.QueryType.PrefixQuery);
-            response.getWriter().println("Showing "+maxrecs+" of "+set.getSize());
-            response.getWriter().println();
-            for(int i=0; i<set.getSize() && i<maxrecs; i++) {
-                Record rec = set.getRecord(i);
-                response.getWriter().print(rec.render());
+            PrefixQuery query = new PrefixQuery("@attr 1=4 karel");
+
+            ScanSet set = con.scan(query);
+
+            for (int i = 0; i < set.getSize(); i++) {
+                ScanTerm rec = set.get(i);
+                System.out.println(rec.getTerm());
             }
-        } catch (ZoomException ze) {
-            throw new ServletException(ze);
+
+        } catch (ZoomException e) {
+            e.printStackTrace();
         } finally {
             con.close();
         }
-        */
+
 
     }
 }
