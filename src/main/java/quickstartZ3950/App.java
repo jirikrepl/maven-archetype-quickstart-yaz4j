@@ -16,8 +16,6 @@ public class App {
     public static void main(String[] args) {
         Connection connection = new Connection("aleph.mzk.cz", 9991);
         connection.setDatabaseName("MZK01");
-//        connection.option("encoding", "UTF8");
-//        connection.option("encoding");
 
         try {
             connection.connect();
@@ -37,7 +35,7 @@ public class App {
                 Record record = set.getRecord(i);
                 ByteArrayInputStream in = new ByteArrayInputStream(record.getContent());
                 /* MARC4J */
-                MarcReader reader = new MarcStreamReader(in, "UTF-8");
+                MarcReader reader = new MarcStreamReader(in, "windows-1250");
                 MarcWriter writer = new MarcXmlWriter(System.out, true);
 
                 while (reader.hasNext()) {
