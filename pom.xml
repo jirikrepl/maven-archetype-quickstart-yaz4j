@@ -31,6 +31,12 @@
         </dependency>
 
         <dependency>
+            <groupId>info.freelibrary</groupId>
+            <artifactId>freelib-marc4j</artifactId>
+            <version>2.6.10</version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
