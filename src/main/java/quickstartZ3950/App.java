@@ -1,56 +1,70 @@
 package quickstartZ3950;
 
-import org.marc4j.MarcReader;
-import org.marc4j.MarcStreamReader;
-import org.marc4j.MarcWriter;
-import org.marc4j.MarcXmlWriter;
+import org.marc4j.*;
 import org.yaz4j.*;
 import org.yaz4j.exception.ZoomException;
 
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Hello world!
  */
+@SuppressWarnings("Duplicates")
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ZoomException, UnsupportedEncodingException {
         Connection connection = new Connection("aleph.mzk.cz", 9991);
         connection.setDatabaseName("MZK01");
+        PrefixQuery query = new PrefixQuery("@attrset bib-1 @attr 1=12 \"000088411\"");
+        ResultSet set = null;
 
+        /* DOWNLOAD DC START */
+//         setSyntax("xml") downloads DC
+        connection.setSyntax("xml");
         try {
             connection.connect();
-
-            /*
-            PrefixQuery query = new PrefixQuery("@attr 1=4 karel");
-            ScanSet set = connection.scan(query);
-            for (int i = 0; i < set.getSize(); i++) {
-                ScanTerm rec = set.get(i);
-                System.out.println(rec.getTerm());
-            }
-            */
-
-            PrefixQuery query = new PrefixQuery("@attrset bib-1 @attr 1=12 \"000088411\"");
-            ResultSet set = connection.search(query);
-            for (int i = 0; i < set.getHitCount(); i++) {
-                Record record = set.getRecord(i);
-                ByteArrayInputStream in = new ByteArrayInputStream(record.getContent());
-                /* MARC4J */
-                MarcReader reader = new MarcStreamReader(in, "windows-1250");
-                MarcWriter writer = new MarcXmlWriter(System.out, true);
-
-                while (reader.hasNext()) {
-                    org.marc4j.marc.Record marcRecord = reader.next();
-                    writer.write(marcRecord);
-                }
-                writer.close();
-            }
-
+            set = connection.search(query);
         } catch (ZoomException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            connection.close();
         }
+        for (int i = 0; i < set.getHitCount(); i++) {
+            System.out.println("\nRAW DC DATA - record.render()\n");
+            Record record = set.getRecord(i);
+            System.out.println(new String(record.getContent(), "windows-1250"));
+        }
+        /* DOWNLOAD DC END */
+
+
+        /* DOWNLOAD MARC START */
+        // jinak je "usmarc" implicitni nastaveni
+        connection.setSyntax("usmarc");
+        try {
+            set = connection.search(query);
+        } catch (ZoomException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < set.getHitCount(); i++) {
+            Record record = set.getRecord(i);
+            System.out.println("\n\nRAW MARC DATA - record.render()\n");
+            System.out.println(record.render());
+
+            ByteArrayInputStream in = new ByteArrayInputStream(record.getContent());
+            MarcReader reader = new MarcStreamReader(in, "windows-1250");
+//            MarcReader reader = new MarcStreamReader(in);
+            MarcWriter writer = new MarcXmlWriter(System.out, true);
+
+            System.out.println("\n\nMARC4J MARC->XML\n");
+            while (reader.hasNext()) {
+                org.marc4j.marc.Record marcRecord = reader.next();
+                writer.write(marcRecord);
+            }
+            writer.close();
+        }
+        connection.close();
+        /* DOWNLOAD MARC END */
     }
 }

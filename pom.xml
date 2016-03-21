@@ -36,6 +36,12 @@
             <version>2.6.10</version>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>mzk.marc4j</groupId>-->
+            <!--<artifactId>marc4j</artifactId>-->
+            <!--<version>2.6.5</version>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
