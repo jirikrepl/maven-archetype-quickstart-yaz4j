@@ -54,7 +54,10 @@ public class App {
 
             ByteArrayInputStream in = new ByteArrayInputStream(record.getContent());
             MarcReader reader = new MarcStreamReader(in, "windows-1250");
-//            MarcReader reader = new MarcStreamReader(in);
+
+            // takto bez nastaveneho kodovani projde i marc4j (pak je nutne nejak opravit kodovani)
+            // MarcReader reader = new MarcStreamReader(in);
+
             MarcWriter writer = new MarcXmlWriter(System.out, true);
 
             System.out.println("\n\nMARC4J MARC->XML\n");
