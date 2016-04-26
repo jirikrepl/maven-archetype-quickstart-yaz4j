@@ -7,9 +7,6 @@ import org.yaz4j.exception.ZoomException;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
-/**
- * Hello world!
- */
 @SuppressWarnings("Duplicates")
 public class App {
     public static void main(String[] args) throws ZoomException, UnsupportedEncodingException {
@@ -53,7 +50,7 @@ public class App {
             System.out.println(record.render());
 
             ByteArrayInputStream in = new ByteArrayInputStream(record.getContent());
-            MarcReader reader = new MarcStreamReader(in, "windows-1250");
+            MarcReader reader = new MarcStreamReader(in/*, "windows-1250"*/);
 
             // takto bez nastaveneho kodovani projde i marc4j (pak je nutne nejak opravit kodovani)
             // MarcReader reader = new MarcStreamReader(in);

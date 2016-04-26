@@ -20,6 +20,15 @@
             <name>your custom repo</name>
             <url>http://maven.indexdata.com/</url>
         </repository>
+
+        <repository>
+            <id>mzk-mvn-repo</id>
+            <url>https://raw.github.com/moravianlibrary/MEditor/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
     </repositories>
 
     <dependencies>
@@ -31,16 +40,10 @@
         </dependency>
 
         <dependency>
-            <groupId>info.freelibrary</groupId>
-            <artifactId>freelib-marc4j</artifactId>
-            <version>2.6.10</version>
+            <groupId>mzk.marc4j</groupId>
+            <artifactId>marc4j</artifactId>
+            <version>2.6.0</version>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>mzk.marc4j</groupId>-->
-            <!--<artifactId>marc4j</artifactId>-->
-            <!--<version>2.6.5</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>junit</groupId>
